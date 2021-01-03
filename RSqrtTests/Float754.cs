@@ -50,5 +50,16 @@ namespace RSqrtTests
             // gama *= 1.5F - y * 0.5f * gama * gama;   // 2nd iteration, can be removed
             return gama;
         }
+
+        public static float FastSqrtFloat(float y)
+        {
+            var bits = BitConverter.SingleToInt32Bits(y);
+            var sum = 532496253 + (bits >> 1);
+            var gama = BitConverter.Int32BitsToSingle(sum);
+
+            // gama *= 1.5F - y * 0.5f * gama * gama;   // 1st iteration
+            // gama *= 1.5F - y * 0.5f * gama * gama;   // 2nd iteration, can be removed
+            return gama;
+        }
     }
 }

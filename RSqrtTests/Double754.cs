@@ -50,5 +50,16 @@ namespace RSqrtTests
             // gama *= 1.5 - y * 0.5 * gama * gama;   // 2nd iteration, can be removed
             return gama;
         }
+
+        public static double FastSqrtDouble(double y)
+        {
+            var bits = BitConverter.DoubleToInt64Bits(y);
+            var sum = 2303494382008020224L + (bits >> 1);
+            var gama = BitConverter.Int64BitsToDouble(sum);
+
+            // gama *= 1.5 - y * 0.5 * gama * gama;   // 1st iteration
+            // gama *= 1.5 - y * 0.5 * gama * gama;   // 2nd iteration, can be removed
+            return gama;
+        }
     }
 }
