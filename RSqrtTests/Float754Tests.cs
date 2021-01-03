@@ -42,7 +42,8 @@ namespace RSqrtTests
         [Test]
         public void NegativeZeroTest()
         {
-            var number = BitConverter.Int32BitsToSingle(-2147483648);
+            // 0x8000_0000
+            var number = BitConverter.Int32BitsToSingle(-2_147_483_648);
             Assert.AreEqual(0.0f, number);
             var floatToString = Float754.FloatToString(number);
             Assert.AreEqual("-0.00000000 * 2^(-126)", floatToString);
@@ -68,7 +69,9 @@ namespace RSqrtTests
         public void SmallestDenormalizedNumber()
         {
             var number = BitConverter.Int32BitsToSingle(0x00000001);
+            Assert.IsFalse(float.IsNormal(number));
             Assert.AreEqual(1.4e-45f, number);
+            Assert.AreEqual(float.Epsilon, number);
             var floatToString = Float754.FloatToString(number);
             Assert.AreEqual("0.00000012 * 2^(-126)", floatToString);
         }
@@ -77,6 +80,7 @@ namespace RSqrtTests
         public void MiddleDenormalizedNumber()
         {
             var number = BitConverter.Int32BitsToSingle(0x00400000);
+            Assert.IsFalse(float.IsNormal(number));
             Assert.AreEqual(5.87747175E-39f, number);
             var floatToString = Float754.FloatToString(number);
             Assert.AreEqual("0.50000000 * 2^(-126)", floatToString);
@@ -86,6 +90,7 @@ namespace RSqrtTests
         public void LargestDenormalizedNumber()
         {
             var number = BitConverter.Int32BitsToSingle(0x007FFFFF);
+            Assert.IsFalse(float.IsNormal(number));
             Assert.AreEqual(1.17549421E-38f, number);
             var floatToString = Float754.FloatToString(number);
             Assert.AreEqual("0.99999988 * 2^(-126)", floatToString);
@@ -95,6 +100,7 @@ namespace RSqrtTests
         public void SmallestNormalizedNumber()
         {
             var number = BitConverter.Int32BitsToSingle(0x00800000);
+            Assert.IsTrue(float.IsNormal(number));
             Assert.AreEqual(1.17549435E-38f, number);
             var floatToString = Float754.FloatToString(number);
             Assert.AreEqual("1.00000000 * 2^(-126)", floatToString);
@@ -104,7 +110,9 @@ namespace RSqrtTests
         public void LargestNormalizedNumber()
         {
             var number = BitConverter.Int32BitsToSingle(0x7F7FFFFF);
+            Assert.IsTrue(float.IsNormal(number));
             Assert.AreEqual(3.40282347E+38f, number);
+            Assert.AreEqual(float.MaxValue, number);
             var floatToString = Float754.FloatToString(number);
             Assert.AreEqual("1.99999988 * 2^(127)", floatToString);
         }
@@ -113,6 +121,9 @@ namespace RSqrtTests
         public void PositiveInfinityTest()
         {
             var number = float.PositiveInfinity;
+            Assert.IsTrue(float.IsInfinity(number));
+            Assert.IsTrue(float.IsPositiveInfinity(number));
+            Assert.AreEqual(float.PositiveInfinity, number);
             var floatToString = Float754.FloatToString(number);
             Assert.AreEqual("1.00000000 * 2^(128)", floatToString);
         }
@@ -121,6 +132,9 @@ namespace RSqrtTests
         public void NegativeInfinityTest()
         {
             var number = float.NegativeInfinity;
+            Assert.IsTrue(float.IsInfinity(number));
+            Assert.IsTrue(float.IsNegativeInfinity(number));
+            Assert.AreEqual(float.NegativeInfinity, number);
             var floatToString = Float754.FloatToString(number);
             Assert.AreEqual("-1.00000000 * 2^(128)", floatToString);
         }
@@ -129,6 +143,7 @@ namespace RSqrtTests
         public void NotANumberTest()
         {
             var number = float.NaN;
+            Assert.IsTrue(float.IsNaN(number));
             var floatToString = Float754.FloatToString(number);
             Assert.AreEqual("-1.50000000 * 2^(128)", floatToString);
         }

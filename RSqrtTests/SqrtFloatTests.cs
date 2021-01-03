@@ -136,12 +136,48 @@ namespace RSqrtTests
         }
 
         [Test]
+        public void SmallestDenormalizedNumberSqrt()
+        {
+            var number = BitConverter.Int32BitsToSingle(0x00000001);
+            Assert.AreEqual(1.40129846E-45f, number);
+            var gama = Float754.FastInvSqrtFloat(number);
+            Assert.AreEqual(1.32401508E+19f, gama);
+        }
+
+        [Test]
+        public void MiddleDenormalizedNumberSqrt()
+        {
+            var number = BitConverter.Int32BitsToSingle(0x00400000);
+            Assert.AreEqual(5.87747175E-39f, number);
+            var gama = Float754.FastInvSqrtFloat(number);
+            Assert.AreEqual(1.09343078E+19f, gama);
+        }
+
+        [Test]
+        public void LargestDenormalizedNumberSqrt()
+        {
+            var number = BitConverter.Int32BitsToSingle(0x007FFFFF);
+            Assert.AreEqual(1.17549421E-38f, number);
+            var gama = Float754.FastInvSqrtFloat(number);
+            Assert.AreEqual(8.92591896E+18f, gama);
+        }
+
+        [Test]
+        public void SmallestNormalizedNumberSqrt()
+        {
+            var number = BitConverter.Int32BitsToSingle(0x00800000);
+            Assert.AreEqual(1.17549435E-38f, number);
+            var gama = Float754.FastInvSqrtFloat(number);
+            Assert.AreEqual(8.92591841E+18f, gama);
+        }
+
+        [Test]
         public void SqrtOneSixteenthTest()
         {
             var number = 0.0625f;
             Assert.AreEqual("1.00000000 * 2^(-4)", Float754.FloatToString(number));
             var gama = Float754.FastInvSqrtFloat(number);
-            Assert.AreEqual(4.0f, gama, 0.2f);
+            Assert.AreEqual(4.0, gama, 0.13);
         }
 
         [Test]
@@ -150,7 +186,7 @@ namespace RSqrtTests
             var number = 0.25f;
             Assert.AreEqual("1.00000000 * 2^(-2)", Float754.FloatToString(number));
             var gama = Float754.FastInvSqrtFloat(number);
-            Assert.AreEqual(2.0f, gama, 0.1f);
+            Assert.AreEqual(2.0, gama, 0.065);
         }
 
         [Test]
@@ -159,7 +195,7 @@ namespace RSqrtTests
             var number = 0.5f;
             Assert.AreEqual("1.00000000 * 2^(-1)", Float754.FloatToString(number));
             var gama = Float754.FastInvSqrtFloat(number);
-            Assert.AreEqual(1.414213562f, gama, 0.1f);
+            Assert.AreEqual(1.414213562, gama, 0.022);
         }
 
         [Test]
@@ -168,7 +204,7 @@ namespace RSqrtTests
             var number = 2.0f;
             Assert.AreEqual("1.00000000 * 2^(1)", Float754.FloatToString(number));
             var gama = Float754.FastInvSqrtFloat(number);
-            Assert.AreEqual(0.7071067811f, gama, 0.1f);
+            Assert.AreEqual(0.7071067811, gama, 0.011);
         }
 
         [Test]
@@ -177,7 +213,7 @@ namespace RSqrtTests
             var number = 4.0f;
             Assert.AreEqual("1.00000000 * 2^(2)", Float754.FloatToString(number));
             var gama = Float754.FastInvSqrtFloat(number);
-            Assert.AreEqual(0.5f, gama, 0.1f);
+            Assert.AreEqual(0.5, gama, 0.017);
         }
 
         [Test]
@@ -186,7 +222,7 @@ namespace RSqrtTests
             var number = 16.0f;
             Assert.AreEqual("1.00000000 * 2^(4)", Float754.FloatToString(number));
             var gama = Float754.FastInvSqrtFloat(number);
-            Assert.AreEqual(0.25f, gama, 0.01f);
+            Assert.AreEqual(0.25, gama, 0.012);
         }
 
         [Test]
@@ -195,7 +231,34 @@ namespace RSqrtTests
             var number = 256.0f;
             Assert.AreEqual("1.00000000 * 2^(8)", Float754.FloatToString(number));
             var gama = Float754.FastInvSqrtFloat(number);
-            Assert.AreEqual(0.0625f, gama, 0.01f);
+            Assert.AreEqual(0.0625, gama, 0.0025);
+        }
+
+        [Test]
+        public void LargestNormalizedNumberSqrt()
+        {
+            var number = BitConverter.Int32BitsToSingle(0x7F7FFFFF);
+            Assert.AreEqual(3.40282347E+38f, number);
+            var gama = Float754.FastInvSqrtFloat(number);
+            Assert.AreEqual(5.24618366E-20f, gama);
+        }
+
+        [Test]
+        public void PositiveInfinityTest()
+        {
+            var number = float.PositiveInfinity;
+            Assert.IsTrue(float.IsInfinity(number));
+            var gama = Float754.FastInvSqrtFloat(number);
+            Assert.AreEqual(5.24618333E-20f, gama);
+        }
+
+        [Test]
+        public void NotANumberTest()
+        {
+            var number = float.NaN;
+            Assert.IsTrue(float.IsNaN(number));
+            var gama = Float754.FastInvSqrtFloat(number);
+            Assert.AreEqual(1.55459938E+19f, gama);
         }
     }
 }

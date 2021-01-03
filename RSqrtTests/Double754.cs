@@ -12,7 +12,7 @@
 // limitations under the License.
 // 
 // SUBSYSTEM: RSqrtTests
-// FILE:  Float754.cs
+// FILE:  Double754.cs
 // AUTHOR:  Greg Eakin
 
 using System;
@@ -40,14 +40,14 @@ namespace RSqrtTests
             return normalized;
         }
 
-        public static double FastInfSqrtDouble(double y)
+        public static double FastInvSqrtDouble(double y)
         {
             var bits = BitConverter.DoubleToInt64Bits(y);
             var sum = 6910483146024060928L - (bits >> 1);
             var gama = BitConverter.Int64BitsToDouble(sum);
 
-            // gama *= 1.5F - y * 0.5 * gama * gama;   // 1st iteration
-            // gama *= 1.5F - y * 0.5 * gama * gama;   // 2nd iteration, can be removed
+            // gama *= 1.5 - y * 0.5 * gama * gama;   // 1st iteration
+            // gama *= 1.5 - y * 0.5 * gama * gama;   // 2nd iteration, can be removed
             return gama;
         }
     }
