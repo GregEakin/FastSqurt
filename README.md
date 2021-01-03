@@ -35,7 +35,7 @@ gama = 1597488759 - (y >> 1)
 ```
 
 ```csharp
-public static float QSqrt(float y)
+public static float FastInvSqrt(float y)
 {
     var bits = BitConverter.SingleToInt32Bits(y);
     var sum = 1597488759 - (bits >> 1);
@@ -43,6 +43,45 @@ public static float QSqrt(float y)
 
     gama *= 1.5F - 0.5f * y * gama * gama;   // 1st iteration
     gama *= 1.5F - 0.5f * y * gama * gama;   // 2nd iteration, can be removed
+    return gama;
+}
+```
+
+```csharp
+public static float FastSqrtFloat(float y)
+{
+    var bits = BitConverter.SingleToInt32Bits(y);
+    var sum = 532496253 + (bits >> 1);
+    var gama = BitConverter.Int32BitsToSingle(sum);
+
+    gama = 0.5f * gama + y * 0.5f / gama;   // 1st iteration
+    gama = 0.5f * gama + y * 0.5f / gama;   // 2nd iteration, can be removed
+    return gama;
+}
+```
+
+```csharp
+public static double FastInvSqrtDouble(double y)
+{
+    var bits = BitConverter.DoubleToInt64Bits(y);
+    var sum = 6910483146024060928L - (bits >> 1);
+    var gama = BitConverter.Int64BitsToDouble(sum);
+
+    gama *= 1.5 - y * 0.5 * gama * gama;   // 1st iteration
+    gama *= 1.5 - y * 0.5 * gama * gama;   // 2nd iteration, can be removed
+    return gama;
+}
+```
+
+```csharp
+public static double FastSqrtDouble(double y)
+{
+    var bits = BitConverter.DoubleToInt64Bits(y);
+    var sum = 2303494382008020224L + (bits >> 1);
+    var gama = BitConverter.Int64BitsToDouble(sum);
+
+    gama = 0.5 * gama + y * 0.5 / gama;   // 1st iteration
+    gama = 0.5 * gama + y * 0.5 / gama;   // 2nd iteration, can be removed
     return gama;
 }
 ```

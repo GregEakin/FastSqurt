@@ -46,6 +46,36 @@ namespace RSqrtTests
             var sum = 6910483146024060928L - (bits >> 1);
             var gama = BitConverter.Int64BitsToDouble(sum);
 
+            // y = 1 / sqrt(n) = pow(n, -0.5)
+            // s = pow(n, -0.5)
+            // 1/s = pow(n, 0.5)
+            // pow(s, -2) = n
+
+            // f(x) = pow(s, -2) - n        // *
+            // f'(x) = -2 * pow(s,-3)
+
+            // slope = dy / dx
+            // dx = dy/(dy/dx)
+            // dx = f(x)/f'(x)
+            // xnew = x - f(x)/f'(x)
+
+            // xnew = x + 0.5 * y * pow(game, 3)
+
+            // var gg = gama - (pow(gama, -2) - n) * (- 0.5 * gama * gama * gama);
+            // var gg = gama - (pow(gama, -2)) * (- 0.5 * gama * gama * gama) + n * (- 0.5 * gama * gama * gama);
+            // var gg = 1.5 * gama - y * 0.5 * gama * gama * gama;
+
+            // f(x) = 1/sqrt(x) = pow(x, -0.5)
+            // f'(x) = -0.5 * pow(x, -3/2)
+            // xnew = x - f(x)/f'(x)
+
+            // f(y) = pow(y, -2) - x        // * 
+            // f(y) = 0
+            // 0 = pow(y, -2) - x
+            // x = pow(y, -2)
+            // pow(y, 2) = 1/x
+            // y = pow(x, -0.5)
+
             // gama *= 1.5 - y * 0.5 * gama * gama;   // 1st iteration
             // gama *= 1.5 - y * 0.5 * gama * gama;   // 2nd iteration, can be removed
             return gama;
@@ -57,8 +87,25 @@ namespace RSqrtTests
             var sum = 2303494382008020224L + (bits >> 1);
             var gama = BitConverter.Int64BitsToDouble(sum);
 
-            // gama *= 1.5 - y * 0.5 * gama * gama;   // 1st iteration
-            // gama *= 1.5 - y * 0.5 * gama * gama;   // 2nd iteration, can be removed
+            // y = sqrt(n) = pow(n, 0.5)
+            // s = pow(n, 0.5)
+            // pow(s, 2) = n
+
+            // f(x) = pow(s, 2) - n
+            // f'(x) = 2 * s
+
+            // xnew = x - (pow(s, 2) - n)/(2 * s)
+
+            // var gg = gama - (gama * gama - n)/(2 * gama)
+            // var gg = gama - 0.5 * gama + 0.5 * n / gama
+            // var gg = 0.5 * gama + 0.5 * n / gama
+
+            // f(x) = sqrt(x) = pow(x, 0.5)
+            // f'(x) = 0.5 * pow(x, -0.5)
+            // xnew = x - f(x)/f'(x)
+            
+            // gama = 0.5 * gama + y * 0.5 / gama;   // 1st iteration
+            // gama = 0.5 * gama + y * 0.5 / gama;   // 2nd iteration, can be removed
             return gama;
         }
     }

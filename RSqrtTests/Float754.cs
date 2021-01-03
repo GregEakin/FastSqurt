@@ -57,8 +57,8 @@ namespace RSqrtTests
             var sum = 532496253 + (bits >> 1);
             var gama = BitConverter.Int32BitsToSingle(sum);
 
-            // gama *= 1.5F - y * 0.5f * gama * gama;   // 1st iteration
-            // gama *= 1.5F - y * 0.5f * gama * gama;   // 2nd iteration, can be removed
+            // gama = 0.5f * gama + y * 0.5f / gama;   // 1st iteration
+            // gama = 0.5f * gama + y * 0.5f / gama;   // 2nd iteration, can be removed
             return gama;
         }
     }
