@@ -20,7 +20,7 @@ using NUnit.Framework;
 
 namespace RSqrtTests
 {
-    public class SqrtDoubleTests
+    public class InvSqrtDoubleTests
     {
         // From the video: https://www.youtube.com/watch?v=p8u_k2LIZyo
 
@@ -40,6 +40,7 @@ namespace RSqrtTests
         // Log(x) = M / Pow(2.0, 52) + mu + E - 1023
         // Log(x) = Pow(2.0, -52) * (M + Pow(2.0, 52) * E) + mu - 1023
 
+        // Inverse square root:
         // gama = 1 / sqrt(y)
         // log(gama) = log(1 / sqrt(y))
         // log(gama) = log(Pow(y, -0.5))
