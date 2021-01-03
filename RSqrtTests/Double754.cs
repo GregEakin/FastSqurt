@@ -39,5 +39,16 @@ namespace RSqrtTests
             var normalized = $"{sign}{m:F16} * 2^({exponent - 1023})";
             return normalized;
         }
+
+        public static double FastInfSqrtDouble(double y)
+        {
+            var bits = BitConverter.DoubleToInt64Bits(y);
+            var sum = 6910483146024060928L - (bits >> 1);
+            var gama = BitConverter.Int64BitsToDouble(sum);
+
+            // gama *= 1.5F - y * 0.5 * gama * gama;   // 1st iteration
+            // gama *= 1.5F - y * 0.5 * gama * gama;   // 2nd iteration, can be removed
+            return gama;
+        }
     }
 }

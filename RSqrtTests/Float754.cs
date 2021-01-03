@@ -39,5 +39,16 @@ namespace RSqrtTests
             var normalized = $"{sign}{m:F8} * 2^({exponent - 127})";
             return normalized;
         }
+
+        public static float FastInvSqrtFloat(float y)
+        {
+            var bits = BitConverter.SingleToInt32Bits(y);
+            var sum = 1597488759 - (bits >> 1);
+            var gama = BitConverter.Int32BitsToSingle(sum);
+
+            // gama *= 1.5F - y * 0.5f * gama * gama;   // 1st iteration
+            // gama *= 1.5F - y * 0.5f * gama * gama;   // 2nd iteration, can be removed
+            return gama;
+        }
     }
 }

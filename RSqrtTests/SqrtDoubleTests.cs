@@ -66,23 +66,13 @@ namespace RSqrtTests
             var calc = c1 * c2 * c3;
             Assert.AreEqual(c, calc);
         }
-        public static double Q_dsqrt(double y)
-        {
-            var bits = BitConverter.DoubleToInt64Bits(y);
-            var sum = 6910483146024060928L - (bits >> 1);
-            var gama = BitConverter.Int64BitsToDouble(sum);
-
-            // gama *= 1.5F - y * 0.5 * gama * gama;   // 1st iteration
-            // gama *= 1.5F - y * 0.5 * gama * gama;   // 2nd iteration, can be removed
-            return gama;
-        }
 
         [Test]
         public void Test()
         {
             var number = 256.0;
             Assert.AreEqual("1.0000000000000000 * 2^(8)", Double754.DoubleToString(number));
-            var gama = Q_dsqrt(number);
+            var gama = Double754.FastInfSqrtDouble(number);
 
             Assert.AreEqual("1.0000000000000000 * 2^(-4)", Double754.DoubleToString(0.0625));
             var y = BitConverter.Int64BitsToDouble(0x5FE6F7CED9168800L);
@@ -99,7 +89,7 @@ namespace RSqrtTests
             var bits = Double754.DoubleToString(number);
             Assert.AreEqual("0.0000000000000000 * 2^(-1022)", bits);
 
-            var gama = Q_dsqrt(number);
+            var gama = Double754.FastInfSqrtDouble(number);
             Assert.AreEqual(9.6234541417166161E+153d, gama);
         }
 
@@ -108,7 +98,7 @@ namespace RSqrtTests
         {
             var number = 0.0625;
             Assert.AreEqual("1.0000000000000000 * 2^(-4)", Double754.DoubleToString(number));
-            var gama = Q_dsqrt(number);
+            var gama = Double754.FastInfSqrtDouble(number);
             Assert.AreEqual(4.0, gama, 0.2);
         }
 
@@ -117,7 +107,7 @@ namespace RSqrtTests
         {
             var number = 0.25;
             Assert.AreEqual("1.0000000000000000 * 2^(-2)", Double754.DoubleToString(number));
-            var gama = Q_dsqrt(number);
+            var gama = Double754.FastInfSqrtDouble(number);
             Assert.AreEqual(2.0, gama, 0.1);
         }
 
@@ -126,7 +116,7 @@ namespace RSqrtTests
         {
             var number = 0.5;
             Assert.AreEqual("1.0000000000000000 * 2^(-1)", Double754.DoubleToString(number));
-            var gama = Q_dsqrt(number);
+            var gama = Double754.FastInfSqrtDouble(number);
             Assert.AreEqual(1.414213562, gama, 0.1);
         }
 
@@ -135,7 +125,7 @@ namespace RSqrtTests
         {
             var number = 2.0;
             Assert.AreEqual("1.0000000000000000 * 2^(1)", Double754.DoubleToString(number));
-            var gama = Q_dsqrt(number);
+            var gama = Double754.FastInfSqrtDouble(number);
             Assert.AreEqual(0.7071067811, gama, 0.1);
         }
 
@@ -144,7 +134,7 @@ namespace RSqrtTests
         {
             var number = 4.0;
             Assert.AreEqual("1.0000000000000000 * 2^(2)", Double754.DoubleToString(number));
-            var gama = Q_dsqrt(number);
+            var gama = Double754.FastInfSqrtDouble(number);
             Assert.AreEqual(0.5, gama, 0.1);
         }
 
@@ -153,7 +143,7 @@ namespace RSqrtTests
         {
             var number = 16.0;
             Assert.AreEqual("1.0000000000000000 * 2^(4)", Double754.DoubleToString(number));
-            var gama = Q_dsqrt(number);
+            var gama = Double754.FastInfSqrtDouble(number);
             Assert.AreEqual(0.25, gama, 0.01);
         }
 
@@ -162,7 +152,7 @@ namespace RSqrtTests
         {
             var number = 256.0;
             Assert.AreEqual("1.0000000000000000 * 2^(8)", Double754.DoubleToString(number));
-            var gama = Q_dsqrt(number);
+            var gama = Double754.FastInfSqrtDouble(number);
             Assert.AreEqual(0.0625, gama, 0.01);
         }
     }
