@@ -158,6 +158,15 @@ namespace RSqrtTests
         }
 
         [Test]
+        public void Sqrt1Test()
+        {
+            var number = 1.0;
+            Assert.AreEqual("1.0000000000000000 * 2^(0)", Double754.DoubleToString(number));
+            var gama = Double754.FastInvSqrtDouble(number);
+            Assert.AreEqual(1.0, gama, 0.0323);
+        }
+
+        [Test]
         public void Sqrt2Test()
         {
             var number = 2.0;

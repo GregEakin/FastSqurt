@@ -172,6 +172,15 @@ namespace RSqrtTests
         }
 
         [Test]
+        public void Sqrt1Test()
+        {
+            var number = 1.0f;
+            Assert.AreEqual("1.00000000 * 2^(0)", Float754.FloatToString(number));
+            var gama = Float754.FastSqrtFloat(number);
+            Assert.AreEqual(1.0f, gama, 0.0108f);
+        }
+
+        [Test]
         public void Sqrt4Test()
         {
             var number = 4.0f;
