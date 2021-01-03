@@ -6,25 +6,25 @@ x = (E << 23) | M
 x = M + Pow(2.0, 23) * E
 
 ## Number
-x = (1 + M / Pow(2.0, 23)) * Pow(2.0, E - 127)
-Log(x) = Log(1 + M / Pow(2.0, 23) * Pow(2.0, E - 127))
-Log(x) = Log(1 + M / Pow(2.0, 23)) + Log(Pow(2.0, E - 127))
-Log(x) = Log(1 + M / Pow(2.0, 23)) + E - 127
+`x = (1 + M / Pow(2.0, 23)) * Pow(2.0, E - 127)`
+`Log(x) = Log(1 + M / Pow(2.0, 23) * Pow(2.0, E - 127))`
+`Log(x) = Log(1 + M / Pow(2.0, 23)) + Log(Pow(2.0, E - 127))`
+`Log(x) = Log(1 + M / Pow(2.0, 23)) + E - 127`
 
 ### Trick
-log(1 + d) ~= d + mu, for small d, mu = 0.0430
+`log(1 + d) ~= d + mu, for small d, mu = 0.0430`
 
-Log(x) = M / Pow(2.0, 23) + mu + E - 127
-Log(x) = Pow(2.0, -23) * (M + Pow(2.0, 23) * E) + mu - 127
+`Log(x) = M / Pow(2.0, 23) + mu + E - 127`
+`Log(x) = Pow(2.0, -23) * (M + Pow(2.0, 23) * E) + mu - 127`
 
-gama = 1 / sqrt(y)
-log(gama) = log(1 / sqrt(y))
-log(gama) = log(Pow(y, -0.5))
-log(gama) = -0.5 * log(y);
-Pow(2.0, -23) * (Mg + Pow(2.0, 23) * Eg) + mu - 127
-           = -0.5 * (Pow(2.0, -23) * (My + Pow(2.0, 23) * Ey) + mu - 127)
-Mg + Pow(2.0, 23) * Eg = 1.5 * Pow(2.0, 23) * (127 - mu) - 0.5 * (My + Pow(2.0, 23) * Ey)
-gama = 1597488759 - (y >> 1)
+`gama = 1 / sqrt(y)`
+`log(gama) = log(1 / sqrt(y))`
+`log(gama) = log(Pow(y, -0.5))`
+`log(gama) = -0.5 * log(y);`
+`Pow(2.0, -23) * (Mg + Pow(2.0, 23) * Eg) + mu - 127
+           = -0.5 * (Pow(2.0, -23) * (My + Pow(2.0, 23) * Ey) + mu - 127)`
+`Mg + Pow(2.0, 23) * Eg = 1.5 * Pow(2.0, 23) * (127 - mu) - 0.5 * (My + Pow(2.0, 23) * Ey)`
+`gama = 1597488759 - (y >> 1)`
 
 ```csharp
 public static float QSqrt(float y)
