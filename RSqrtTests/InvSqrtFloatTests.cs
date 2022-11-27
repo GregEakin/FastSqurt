@@ -85,6 +85,22 @@ namespace RSqrtTests
         }
 
         [Test]
+        public void ImprovedVideo()
+        {
+            var c = 0x5f375a86;
+            Assert.AreEqual(1597463174, c);
+            Assert.AreEqual(1597463174.0f, c);
+            var str = Float754.FloatToString(c);
+            Assert.AreEqual("1.48775351 * 2^(30)", str);
+
+            var c1 = 3.0 / 2.0;
+            var c2 = Math.Pow(2.0, 23); // 8,388,608
+            var c3 = c / c1 / c2;
+            var mu = 127.0 - c3;
+            Assert.AreEqual(0.045033295949295393, mu);
+        }
+
+        [Test]
         public void Step1()
         {
             var num = new[] { 0.001f, 0.01f, 0.0625f, 0.1f, 0.25f, 0.5f, 1f, 2f, 4f, 8f, 10f, 16f, 100f, 1000f };
